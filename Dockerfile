@@ -1,11 +1,11 @@
 # Build: docker build --rm=true -t bubbleupnpserver .
 # Run: docker run -d --net=host --privileged bubbleupnpserver
 
-from dockeruser/oracle-java7
-maintainer Werner Buck "email@wernerbuck.nl"
+from alpine:latest
+maintainer danbo
 
-#install unzip and wget
-RUN apt-get update && apt-get install -y unzip wget
+RUN set -ex && \
+    apk add --no-cache openjdk8-jre unzip wget #ffmpeg sox
 
 #download bubbleupnpserver, ffmpeg and clean up
 RUN mkdir -p /opt/bubbleupnpserver && \
@@ -17,9 +17,12 @@ RUN mkdir -p /opt/bubbleupnpserver && \
   rm -rf bubbleupnpserver.zip ffmpeg.zip && \
   chmod +x launch.sh
 
+#copy launch file with newly added parameters
+COPY launch.sh /opt/bubbleupnpserver/launch.sh
+RUN chmod +x /opt/bubbleupnpserver/launch.sh
+
 #the http and https and ssdp ports for bubbleupnpserver
 EXPOSE 58050/tcp 58051/tcp 1900/udp
 
 #launch
 ENTRYPOINT ["/opt/bubbleupnpserver/launch.sh"]
-

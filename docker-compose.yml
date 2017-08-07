@@ -1,0 +1,11 @@
+# https://runnable.com/docker/rails/docker-container-linking
+version: "3" # version matters, see https://docs.docker.com/compose/networking/
+services: 
+  bubbleupnp:
+    build: .
+    image: danbo/bubbleupnpserver
+    container_name: bubbleupnp
+    restart: unless-stopped
+    #volumes:
+    # - ./bubbleupnp/configuration.xml:/opt/bubbleupnpserver/configuration.xml:rw
+    network_mode: "host"
