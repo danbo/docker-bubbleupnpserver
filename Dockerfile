@@ -1,7 +1,8 @@
 # Build: docker build --rm=true -t bubbleupnpserver .
 # Run: docker run -d --net=host --privileged bubbleupnpserver
 
-from alpine:latest
+#from alpine:latest
+FROM frolvlad/alpine-glibc
 maintainer danbo
 
 RUN set -ex && \
